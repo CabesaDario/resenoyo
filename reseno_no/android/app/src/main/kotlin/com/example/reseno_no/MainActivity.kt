@@ -1,4 +1,4 @@
-package com.example.reseno_yo
+package com.example.reseno_no
 
 import io.flutter.embedding.android.FlutterActivity
 
