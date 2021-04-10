@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ReseñoÑo',
+      debugShowCheckedModeBanner: false, //quita la marca de agua del debug
       theme: ThemeData(
           // brightness: Brightness.dark,
           primarySwatch: Colors.deepPurple,
