@@ -11,7 +11,7 @@ const users = const {
 class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
-  Future<String?> _authUser(LoginData data) {
+  Future<String> _authUser(LoginData data) {
     print('Nombre: ${data.name}, Pass: ${data.password}');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(data.name)) {
@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
-  Future<String?> _recoverPassword(String name) {
+  Future<String> _recoverPassword(String name) {
     print('Nombre: $name');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(name)) {
@@ -36,29 +36,40 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(
-      title: 'ReseñoÑo',
-      logo: 'assets/images/ecorp-lightblue.png',
-      emailValidator: (value) {
-        if (!value!.contains('@') || !value.endsWith('.com')) {
-          return "Email must contain '@' and end with '.com'";
-        }
-        return null;
-      },
-      passwordValidator: (value) {
-        if (value!.isEmpty) {
-          return 'Password is empty';
-        }
-        return null;
-      },
-      onLogin: _authUser,
-      onSignup: _authUser,
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ));
-      },
-      onRecoverPassword: _recoverPassword,
+    return Container(
+        decoration: new BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/the-thing.jpeg"),
+            fit: BoxFit.cover,
+            ),),
+      child: FlutterLogin(
+        title: 'ReseñoÑo',
+        theme: LoginTheme(
+          pageColorLight: Colors.transparent,
+          pageColorDark: Colors.transparent,
+        ),
+        emailValidator: (value) {
+          if (!value.contains('@') || !value.endsWith('.com')) {
+            return "Email must contain '@' and end with '.com'";
+          }
+          return null;
+        },
+        passwordValidator: (value) {
+          if (value.isEmpty) {
+            return 'Password is empty';
+          }
+          return null;
+        },
+
+        onLogin: _authUser,
+        onSignup: _authUser,
+        onSubmitAnimationCompleted: () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          ));
+        },
+        onRecoverPassword: _recoverPassword,
+      ),
     );
   }
 }

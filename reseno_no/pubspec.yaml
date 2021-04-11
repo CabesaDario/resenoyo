@@ -2,7 +2,7 @@ name: reseno_no
 description: Mi aplicación de reseñas de películas.
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -20,7 +20,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/
+    - assets/images/
 
   fonts:
     - family: OpenSans
