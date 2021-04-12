@@ -39,11 +39,10 @@ class LoginScreen extends StatelessWidget {
     return Container(
         decoration: new BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/the-thing.jpeg"),
+            image: AssetImage("assets/images/the-thing.jpg"),
             fit: BoxFit.cover,
             ),),
       child: FlutterLogin(
-        title: 'ReseñoÑo',
         theme: LoginTheme(
           pageColorLight: Colors.transparent,
           pageColorDark: Colors.transparent,
