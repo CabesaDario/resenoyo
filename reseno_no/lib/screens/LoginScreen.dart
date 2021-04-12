@@ -60,7 +60,12 @@ class LoginScreen extends StatelessWidget {
           return null;
         },
 
-        onLogin: _authUser,
+        onLogin: (loginData) { //todo aquí función de logarse en la firebase
+        print('Login info');
+        print('Name: ${loginData.name}');
+        print('Password: ${loginData.password}');
+        return _authUser(loginData);
+        },
         onSignup: _authUser,
         onSubmitAnimationCompleted: () {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
