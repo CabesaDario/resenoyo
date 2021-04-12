@@ -1,7 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:reseno_no/screens/LoginScreen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // Uncomment this to use the auth emulator for testing
+  // await FirebaseAuth.instance.useEmulator('http://localhost:9099');
   runApp(MyApp());
 }
 
