@@ -1,28 +1,21 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_login/flutter_login.dart';
 import 'package:reseno_no/screens/HomeScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 const users = const {
   'cabesa@gmail.com': '2232',
   'otro@gmail.com': 'puff',
 };
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() => _LoginScreenState();
+}
+class _LoginScreenState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: 2250);
-
-  Future<String> _authUser(LoginData data) {
-    print('Nombre: ${data.name}, Pass: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'El usuario indicado no existe';
-      }
-      if (users[data.name] != data.password) {
-        return 'La contraseña indicada no existe';
-      }
-      return null;
-    });
-  }
 
   Future<String> _recoverPassword(String name) {
     print('Nombre: $name');
@@ -47,28 +40,34 @@ class LoginScreen extends StatelessWidget {
           pageColorLight: Colors.transparent,
           pageColorDark: Colors.transparent,
         ),
+        messages: LoginMessages(
+          confirmPasswordError: 'Las contraseñas no coinciden',
+          signupButton: 'Registrarse',
+          forgotPasswordButton: '¿Olvidó la contraseña?'
+        ),
         emailValidator: (value) {
           if (!value.contains('@') || !value.endsWith('.com')) {
-            return "Email must contain '@' and end with '.com'";
+            return "formato de email inválido";
           }
           return null;
         },
         passwordValidator: (value) {
           if (value.isEmpty) {
-            return 'Password is empty';
+            return 'La contraseña está vacía';
+          }else if(value.length < 6){
+            return 'Contraseña demasiado débil';
           }
           return null;
         },
 
-        onLogin: (loginData) { //todo aquí función de logarse en la firebase
-        print('Login info');
-        print('Name: ${loginData.name}');
-        print('Password: ${loginData.password}');
-        return _authUser(loginData);
+        onLogin: (loginData) {
+         return _signInWithEmailAndPassword(loginData);
         },
-        onSignup: _authUser,
+        onSignup: (loginData) {
+          return _register(loginData.name, loginData.password);
+        },
         onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
+          Navigator.of(context).pushReplacement(MaterialPageRoute( //para no poder volver con tecla back
             builder: (context) => HomeScreen(),
           ));
         },
@@ -76,4 +75,36 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+  Future<String> _signInWithEmailAndPassword(LoginData data) async {
+    try {
+      final User user = (await _auth.signInWithEmailAndPassword(
+        email: data.name,
+        password: data.password,
+      ))
+          .user;
+
+     return null;
+    } on FirebaseAuthException {
+      return 'Usuario y/o contraseña incorrectos';
+    }
+  }
+  Future<String> _register(String email, String pass) async {
+    User user;
+    try {
+      user = (await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: pass,
+      ))
+          .user;
+    }on FirebaseAuthException{
+      return 'El usuario indicado ya existe';
+    }
+    if (user != null) {
+      return null;
+    } else {
+      return "Algo salió mal";
+    }
+  }
+
 }
