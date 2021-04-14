@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.reseno_no">
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Añadido para permitir conexiones http inseguras -->
    <application
         android:label="reseno_no"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
