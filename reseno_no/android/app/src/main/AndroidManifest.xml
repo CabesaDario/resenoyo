@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.reseno_no">
+    <!-- todo deshabilitar esto por si acaso cuando termine el swiper-->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Añadido para permitir conexiones http inseguras -->
    <application
         android:label="reseno_no"

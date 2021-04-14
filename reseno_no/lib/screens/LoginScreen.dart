@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.of(context).pushReplacement(MaterialPageRoute( //para no poder volver con tecla back
             builder: (context) => HomeScreen(),
           ));
-        },
+        }, // todo implementar esto o quitar la opción
         onRecoverPassword: _recoverPassword,
       ),
     );

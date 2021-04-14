@@ -6,6 +6,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Populares'),
+        leading: Container(),
+      ),
         body: Container(
           child: (Column(
             children: [
@@ -18,6 +22,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _swiperPeliculas() {
     return Container(
+      padding: EdgeInsets.only(top: 10.0),
       width: double.infinity,
       height: 300.0,
       child: Swiper(
@@ -28,8 +33,10 @@ class HomeScreen extends StatelessWidget {
         },
 
         itemCount: 3,
-        pagination: new SwiperPagination(),
-        control: new SwiperControl(),
+        //pagination: new SwiperPagination(),
+        //control: new SwiperControl(),
+        itemWidth: 200.0,
+        layout: SwiperLayout.STACK,
       ),
     );
 
