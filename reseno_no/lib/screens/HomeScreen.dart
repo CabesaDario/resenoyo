@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:reseno_no/providers/peliculas_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -21,6 +22,8 @@ class HomeScreen extends StatelessWidget {
 }
 
   Widget _swiperPeliculas() {
+    final peliculasProvider = new PeliculasProvider();
+    peliculasProvider.getEnCines();
     return Container(
       padding: EdgeInsets.only(top: 10.0),
       width: double.infinity,
