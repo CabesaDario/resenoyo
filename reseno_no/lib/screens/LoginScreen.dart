@@ -46,12 +46,16 @@ class _LoginScreenState extends State<LoginScreen> {
           forgotPasswordButton: '¿Olvidó la contraseña?'
         ),
         emailValidator: (value) {
+          return null;
+          //todo quitar el null de ahi para que valide
           if (!value.contains('@') || !value.endsWith('.com')) {
             return "formato de email inválido";
           }
           return null;
         },
         passwordValidator: (value) {
+          return null;
+          //todo quitar el null de ahi para que valide
           if (value.isEmpty) {
             return 'La contraseña está vacía';
           }else if(value.length < 6){
@@ -78,11 +82,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<String> _signInWithEmailAndPassword(LoginData data) async {
     try {
-      final User user = (await _auth.signInWithEmailAndPassword(
+      await _auth.signInAnonymously();
+      /*todo esto es la autentacion verdadera, cuando no quiera
+          logarme anonimo, lo descomento
+        (await _auth.signInWithEmailAndPassword(
         email: data.name,
         password: data.password,
       ))
-          .user;
+          .user;*/
 
      return null;
     } on FirebaseAuthException {
