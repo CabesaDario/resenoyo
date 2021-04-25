@@ -62,4 +62,11 @@ class Pelicula {
   voteAverage = json['vote_average'] / 1;
   voteCount = json['vote_count'];
   }
+
+  getPosterImg() {
+    if(posterPath == null){
+      return 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-no-image-available-icon-flat-vector.jpg?ver=6';
+    }
+    return 'https://image.tmdb.org/t/p/w500/$posterPath';
+  }
 }

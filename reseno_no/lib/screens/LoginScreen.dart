@@ -47,21 +47,21 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         emailValidator: (value) {
           return null;
-          //todo quitar el null de ahi para que valide
+          /*//todo quitar el null de ahi para que valide
           if (!value.contains('@') || !value.endsWith('.com')) {
             return "formato de email inválido";
           }
-          return null;
+          return null;*/
         },
         passwordValidator: (value) {
           return null;
           //todo quitar el null de ahi para que valide
-          if (value.isEmpty) {
+          /*if (value.isEmpty) {
             return 'La contraseña está vacía';
           }else if(value.length < 6){
             return 'Contraseña demasiado débil';
           }
-          return null;
+          return null;*/
         },
 
         onLogin: (loginData) {
