@@ -1,17 +1,14 @@
-class Peliculas{
+class Peliculas {
   List<Pelicula> items = [];
   Peliculas();
-  Peliculas.fromJsonList(List<dynamic> jsonList){
-    if(jsonList == null) return;
-    for (var item in jsonList){
+  Peliculas.fromJsonList(List<dynamic> jsonList) {
+    if (jsonList == null) return;
+    for (var item in jsonList) {
       final pelicula = new Pelicula.fromJsonMap(item);
-      items.add( pelicula );
+      items.add(pelicula);
     }
   }
 }
-
-
-
 
 class Pelicula {
   bool adult;
@@ -46,27 +43,34 @@ class Pelicula {
     this.voteCount,
   });
 
-  Pelicula.fromJsonMap( Map<String, dynamic> json){
-  adult = json['adult'];
-  backdropPath = json['backdrop_path'];
-  genreIds = json['genre_ids'].cast<int>();
-  id = json['id'];
-  originalLanguage = json['original_language'];
-  originalTitle = json['original_title'];
-  overview = json['overview'];
-  popularity = json['popularity'] / 1;
-  posterPath = json['poster_path'];
-  releaseDate = json['release_date'];
-  title = json['title'];
-  video = json['video'];
-  voteAverage = json['vote_average'] / 1;
-  voteCount = json['vote_count'];
+  Pelicula.fromJsonMap(Map<String, dynamic> json) {
+    adult = json['adult'];
+    backdropPath = json['backdrop_path'];
+    genreIds = json['genre_ids'].cast<int>();
+    id = json['id'];
+    originalLanguage = json['original_language'];
+    originalTitle = json['original_title'];
+    overview = json['overview'];
+    popularity = json['popularity'] / 1;
+    posterPath = json['poster_path'];
+    releaseDate = json['release_date'];
+    title = json['title'];
+    video = json['video'];
+    voteAverage = json['vote_average'] / 1;
+    voteCount = json['vote_count'];
   }
 
   getPosterImg() {
-    if(posterPath == null){
+    if (posterPath == null) {
       return 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-no-image-available-icon-flat-vector.jpg?ver=6';
     }
     return 'https://image.tmdb.org/t/p/w500/$posterPath';
+  }
+
+  getBackgroundImg() {
+    if (posterPath == null) {
+      return 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-no-image-available-icon-flat-vector.jpg?ver=6';
+    }
+    return 'https://image.tmdb.org/t/p/w500/$backdropPath';
   }
 }
