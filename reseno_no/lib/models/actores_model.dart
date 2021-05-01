@@ -1,23 +1,22 @@
 class Cast {
-  List<Casting> actores = [];
+  List<Colaborador> actores = [];
 
   Cast.fromJsonList(List<dynamic> jsonList) {
     if (jsonList == null) return;
 
     jsonList.forEach((item) {
-      final colaborador = Casting.fromJsonMap(item);
-      if (colaborador.department == Department.ACTING) {
-        actores.add(colaborador);
-      }
+      final colaborador = Colaborador.fromJsonMap(item);
+      if (colaborador.department == 'Acting') {}
+      actores.add(colaborador);
     });
   }
 }
 
-class Casting {
+class Colaborador {
   bool adult;
   int gender;
   int id;
-  Department knownForDepartment;
+  String knownForDepartment;
   String name;
   String originalName;
   double popularity;
@@ -26,10 +25,10 @@ class Casting {
   String character;
   String creditId;
   int order;
-  Department department;
+  String department;
   String job;
 
-  Casting({
+  Colaborador({
     this.adult,
     this.gender,
     this.id,
@@ -46,7 +45,7 @@ class Casting {
     this.job,
   });
 
-  Casting.fromJsonMap(Map<String, dynamic> json) {
+  Colaborador.fromJsonMap(Map<String, dynamic> json) {
     adult = json['adult'];
     gender = json['gender'];
     id = json['id'];
@@ -69,19 +68,4 @@ class Casting {
     }
     return 'https://image.tmdb.org/t/p/w500/$profilePath';
   }
-}
-
-enum Department {
-  ACTING,
-  WRITING,
-  CREW,
-  VISUAL_EFFECTS,
-  DIRECTING,
-  PRODUCTION,
-  COSTUME_MAKE_UP,
-  ART,
-  SOUND,
-  CAMERA,
-  EDITING,
-  LIGHTING
 }

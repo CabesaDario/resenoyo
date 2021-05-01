@@ -64,7 +64,7 @@ class PeliculasProvider {
     return resp;
   }
 
-  Future<List<Casting>> getCast(String peliId) async {
+  Future<List<Colaborador>> getCast(String peliId) async {
     final url = Uri.https(_url, '3/movie/$peliId/credits',
         {'api_key': _apiKey, 'language': _language});
 

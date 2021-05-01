@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:reseno_no/models/actores_model.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
+import 'package:reseno_no/providers/peliculas_provider.dart';
 
 class PeliculaDetalle extends StatelessWidget {
   @override
@@ -22,6 +24,7 @@ class PeliculaDetalle extends StatelessWidget {
             _descripcion(pelicula),
             _descripcion(pelicula),
             _descripcion(pelicula),
+            _crearCasting(pelicula),
           ]),
         )
       ],
@@ -52,11 +55,14 @@ class PeliculaDetalle extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: Image(
-                image: NetworkImage(pelicula.getPosterImg()),
-                height: 150.0,
+            Hero(
+              tag: pelicula.uniqueId,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image(
+                  image: NetworkImage(pelicula.getPosterImg()),
+                  height: 150.0,
+                ),
               ),
             ),
             SizedBox(
@@ -100,5 +106,53 @@ class PeliculaDetalle extends StatelessWidget {
         textAlign: TextAlign.justify,
       ),
     );
+  }
+
+  Widget _crearCasting(Pelicula pelicula) {
+    final peliProvider = new PeliculasProvider();
+
+    return FutureBuilder(
+      future: peliProvider.getCast(pelicula.id.toString()),
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        if (snapshot.hasData) {
+          return _crearActoresPageView(snapshot.data);
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _crearActoresPageView(List<Colaborador> actores) {
+    return SizedBox(
+        height: 200.0,
+        child: PageView.builder(
+          pageSnapping: false,
+          itemCount: actores.length,
+          controller: PageController(viewportFraction: 0.3, initialPage: 1),
+          itemBuilder: (context, index) => _actorTarjeta(actores[index]),
+        ));
+  }
+
+  Widget _actorTarjeta(Colaborador actor) {
+    return Container(
+        child: Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: FadeInImage(
+              height: 150.0,
+              fit: BoxFit.cover,
+              placeholder: AssetImage('assets/image/mo-image.jpg'),
+              image: NetworkImage(actor.getPhoto())),
+        ),
+        Text(
+          actor.name,
+          overflow: TextOverflow.ellipsis,
+        )
+      ],
+    ));
   }
 }
