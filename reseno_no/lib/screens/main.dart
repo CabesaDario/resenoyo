@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reseno_no/screens/LoginScreen.dart';
 import 'package:reseno_no/screens/pelicula_detalle.dart';
+import 'package:reseno_no/screens/resena_secreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +15,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,6 +58,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginScreen(),
         'detalle': (context) => PeliculaDetalle(),
+        'resena': (context) => ResenaScreen(),
       },
     );
   }

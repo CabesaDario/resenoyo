@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:reseno_no/providers/peliculas_provider.dart';
 import 'package:reseno_no/search/search_delegate.dart';
 import 'package:reseno_no/widgets/card_swiper_widget.dart';
+import 'package:reseno_no/widgets/menu_slider.dart';
 import 'package:reseno_no/widgets/movie_horizontal.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,30 +13,31 @@ class HomeScreen extends StatelessWidget {
     peliculasProvider.getPopulares();
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Películas en cines'),
-          leading: Container(),
-          actions: [
-            IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  showSearch(
-                    context: context,
-                    delegate:
-                        DataSearch(), /*query: 'Este 3er argumento hace que se prerellene la barra de busqueda con este texto'*/
-                  );
-                })
+      appBar: AppBar(
+        title: Text('Películas en cines'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate:
+                      DataSearch(), /*query: 'Este 3er argumento hace que se prerellene la barra de busqueda con este texto'*/
+                );
+              })
+        ],
+      ),
+      drawer: NavDrawer(),
+      body: Container(
+        child: (Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _swiperPeliculas(),
+            _footer(context),
           ],
-        ),
-        body: Container(
-          child: (Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _swiperPeliculas(),
-              _footer(context),
-            ],
-          )),
-        ));
+        )),
+      ),
+    );
   }
 
   Widget _swiperPeliculas() {

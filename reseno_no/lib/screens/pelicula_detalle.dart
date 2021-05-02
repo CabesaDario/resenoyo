@@ -9,26 +9,34 @@ class PeliculaDetalle extends StatelessWidget {
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-        body: CustomScrollView(
-      slivers: [
-        _crearAppbar(pelicula),
-        SliverList(
-          delegate: SliverChildListDelegate([
-            SizedBox(height: 10.0),
-            _posterTitulo(pelicula, context),
-            _descripcion(pelicula),
-            _descripcion(pelicula),
-            _descripcion(pelicula),
-            _descripcion(pelicula),
-            _descripcion(pelicula),
-            _descripcion(pelicula),
-            _descripcion(pelicula),
-            _descripcion(pelicula),
-            _crearCasting(pelicula),
-          ]),
-        )
-      ],
-    ));
+      body: CustomScrollView(
+        slivers: [
+          _crearAppbar(pelicula),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              SizedBox(height: 10.0),
+              _posterTitulo(pelicula, context),
+              _descripcion(pelicula),
+              _descripcion(pelicula),
+              _descripcion(pelicula),
+              _descripcion(pelicula),
+              _descripcion(pelicula),
+              _descripcion(pelicula),
+              _descripcion(pelicula),
+              _descripcion(pelicula),
+              _crearCasting(pelicula),
+            ]),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, 'resena', arguments: pelicula);
+        },
+        child: const Icon(Icons.book),
+        backgroundColor: Colors.green,
+      ),
+    );
   }
 
   Widget _crearAppbar(Pelicula pelicula) {
