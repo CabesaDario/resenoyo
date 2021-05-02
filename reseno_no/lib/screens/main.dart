@@ -2,8 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reseno_no/screens/LoginScreen.dart';
+import 'package:reseno_no/screens/mis_resenas.dart';
 import 'package:reseno_no/screens/pelicula_detalle.dart';
 import 'package:reseno_no/screens/resena_secreen.dart';
+
+import 'HomeScreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,6 +60,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => LoginScreen(),
+        'home': (context) => HomeScreen(),
+        'mis_resenas': (context) => MisResenas(),
         'detalle': (context) => PeliculaDetalle(),
         'resena': (context) => ResenaScreen(),
       },

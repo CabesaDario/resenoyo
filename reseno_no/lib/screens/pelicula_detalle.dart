@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reseno_no/models/actores_model.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
 import 'package:reseno_no/providers/peliculas_provider.dart';
+import 'package:reseno_no/widgets/menu_slider.dart';
 
 class PeliculaDetalle extends StatelessWidget {
   @override
@@ -9,6 +10,7 @@ class PeliculaDetalle extends StatelessWidget {
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
+      drawer: NavDrawer(),
       body: CustomScrollView(
         slivers: [
           _crearAppbar(pelicula),
@@ -153,7 +155,7 @@ class PeliculaDetalle extends StatelessWidget {
           child: FadeInImage(
               height: 150.0,
               fit: BoxFit.cover,
-              placeholder: AssetImage('assets/image/mo-image.jpg'),
+              placeholder: AssetImage('assets/images/no-image.jpg'),
               image: NetworkImage(actor.getPhoto())),
         ),
         Text(

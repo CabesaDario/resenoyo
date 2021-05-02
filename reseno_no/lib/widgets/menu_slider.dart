@@ -20,8 +20,13 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.input),
-            title: Text('Welcome'),
-            onTap: () => {},
+            title: Text('Películas populares'),
+            onTap: () => {Navigator.pushNamed(context, 'home')},
+          ),
+          ListTile(
+            leading: Icon(Icons.book),
+            title: Text('Mis reseñas'),
+            onTap: () => {Navigator.pushNamed(context, 'mis_resenas')},
           ),
           ListTile(
             leading: Icon(Icons.verified_user),

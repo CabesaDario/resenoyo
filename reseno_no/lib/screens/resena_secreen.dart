@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
+import 'package:reseno_no/widgets/menu_slider.dart';
 
 class ResenaScreen extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
@@ -11,10 +12,10 @@ class ResenaScreen extends StatelessWidget {
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
     final _screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('Añade una reseña'),
         centerTitle: true,
-        leading: Container(),
       ),
       body: Column(
         children: [
@@ -53,6 +54,12 @@ class ResenaScreen extends StatelessWidget {
               ),
             ),
           ),
+          TextButton(
+              child: Text('Reseñar'),
+              onPressed: () {
+                /*TODO mostrar snackbar*/
+                print('Hecho');
+              }),
         ],
       ),
     );
