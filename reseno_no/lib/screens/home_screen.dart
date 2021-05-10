@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reseno_no/providers/peliculas_provider.dart';
 import 'package:reseno_no/search/search_delegate.dart';
+import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/widgets/card_swiper_widget.dart';
 import 'package:reseno_no/widgets/menu_slider.dart';
 import 'package:reseno_no/widgets/movie_horizontal.dart';
@@ -11,10 +12,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     peliculasProvider.getPopulares();
-
+    final prefs = new PreferenciasUsuario();
     return Scaffold(
       appBar: AppBar(
         title: Text('Películas en cines'),
+        backgroundColor: (prefs.colorSecundario) ? Colors.teal : Colors.blue,
         actions: [
           IconButton(
               icon: Icon(Icons.search),
@@ -32,6 +34,7 @@ class HomeScreen extends StatelessWidget {
         child: (Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            Text('Género: ${prefs.genero}'),
             _swiperPeliculas(),
             _footer(context),
           ],

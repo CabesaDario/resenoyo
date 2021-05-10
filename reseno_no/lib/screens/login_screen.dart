@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:reseno_no/screens/HomeScreen.dart';
+import 'package:reseno_no/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 const users = const {
@@ -10,10 +10,10 @@ const users = const {
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class LoginScreen extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => _LoginScreenState();
 }
+
 class _LoginScreenState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: 2250);
 
@@ -30,21 +30,21 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: new BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/the-thing.jpg"),
-            fit: BoxFit.cover,
-            ),),
+      decoration: new BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/the-thing.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: FlutterLogin(
         theme: LoginTheme(
           pageColorLight: Colors.transparent,
           pageColorDark: Colors.transparent,
         ),
         messages: LoginMessages(
-          confirmPasswordError: 'Las contraseñas no coinciden',
-          signupButton: 'Registrarse',
-          forgotPasswordButton: '¿Olvidó la contraseña?'
-        ),
+            confirmPasswordError: 'Las contraseñas no coinciden',
+            signupButton: 'Registrarse',
+            forgotPasswordButton: '¿Olvidó la contraseña?'),
         emailValidator: (value) {
           return null;
           /*//todo quitar el null de ahi para que valide
@@ -65,13 +65,14 @@ class _LoginScreenState extends State<LoginScreen> {
         },
 
         onLogin: (loginData) {
-         return _signInWithEmailAndPassword(loginData);
+          return _signInWithEmailAndPassword(loginData);
         },
         onSignup: (loginData) {
           return _register(loginData.name, loginData.password);
         },
         onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute( //para no poder volver con tecla back
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            //para no poder volver con tecla back
             builder: (context) => HomeScreen(),
           ));
         }, // todo implementar esto o quitar la opción
@@ -91,11 +92,12 @@ class _LoginScreenState extends State<LoginScreen> {
       ))
           .user;*/
 
-     return null;
+      return null;
     } on FirebaseAuthException {
       return 'Usuario y/o contraseña incorrectos';
     }
   }
+
   Future<String> _register(String email, String pass) async {
     User user;
     try {
@@ -104,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
         password: pass,
       ))
           .user;
-    }on FirebaseAuthException{
+    } on FirebaseAuthException {
       return 'El usuario indicado ya existe';
     }
     if (user != null) {
@@ -113,5 +115,4 @@ class _LoginScreenState extends State<LoginScreen> {
       return "Algo salió mal";
     }
   }
-
 }

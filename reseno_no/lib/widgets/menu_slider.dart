@@ -35,8 +35,8 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
+            title: Text('Ajustes'),
+            onTap: () => {Navigator.pushNamed(context, 'settings')},
           ),
           ListTile(
             leading: Icon(Icons.border_color),

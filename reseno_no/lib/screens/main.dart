@@ -1,19 +1,23 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reseno_no/screens/LoginScreen.dart';
+import 'package:reseno_no/screens/login_screen.dart';
 import 'package:reseno_no/screens/mis_resenas.dart';
 import 'package:reseno_no/screens/pelicula_detalle.dart';
 import 'package:reseno_no/screens/resena_secreen.dart';
+import 'package:reseno_no/screens/settings_screen.dart';
+import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 
-import 'HomeScreen.dart';
+import 'home_screen.dart';
 
 Future<void> main() async {
+  final prefs = new PreferenciasUsuario();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  await prefs.initPrefs();
   runApp(MyApp());
 }
 
@@ -61,6 +65,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginScreen(),
         'home': (context) => HomeScreen(),
+        'settings': (context) => SettingsScreen(),
         'mis_resenas': (context) => MisResenas(),
         'detalle': (context) => PeliculaDetalle(),
         'resena': (context) => ResenaScreen(),
