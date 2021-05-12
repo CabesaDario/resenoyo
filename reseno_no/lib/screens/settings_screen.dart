@@ -4,6 +4,7 @@ import 'package:reseno_no/widgets/menu_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
+  static final String routeName = 'settings';
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -20,6 +21,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
+
+    prefs.ultimaPagina = SettingsScreen.routeName;
     _genero = prefs.genero;
     _colorSecundario = prefs.colorSecundario;
     _textController = new TextEditingController(text: _nombre);

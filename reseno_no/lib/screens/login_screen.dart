@@ -1,13 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:reseno_no/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 
 const users = const {
   'cabesa@gmail.com': '2232',
   'otro@gmail.com': 'puff',
 };
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final prefs = new PreferenciasUsuario();
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -83,15 +86,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<String> _signInWithEmailAndPassword(LoginData data) async {
     try {
-      await _auth.signInAnonymously();
+      //await _auth.signInAnonymously();
       /*todo esto es la autentacion verdadera, cuando no quiera
-          logarme anonimo, lo descomento
-        (await _auth.signInWithEmailAndPassword(
+          logarme anonimo, lo descomento*/
+      User user = (await _auth.signInWithEmailAndPassword(
         email: data.name,
         password: data.password,
       ))
-          .user;*/
-
+          .user;
+      prefs.email = user.email;
       return null;
     } on FirebaseAuthException {
       return 'Usuario y/o contraseña incorrectos';
@@ -106,6 +109,16 @@ class _LoginScreenState extends State<LoginScreen> {
         password: pass,
       ))
           .user;
+      CollectionReference usuarios =
+          FirebaseFirestore.instance.collection('usuarios');
+      await usuarios
+          .doc(email)
+          .set({
+            'name': email,
+          })
+          .then((value) => print("Usuario Añadido"))
+          .catchError((error) => print("Error al añadir usuario: $error"));
+      prefs.email = user.email;
     } on FirebaseAuthException {
       return 'El usuario indicado ya existe';
     }

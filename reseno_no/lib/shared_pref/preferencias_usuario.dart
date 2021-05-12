@@ -30,6 +30,14 @@ class PreferenciasUsuario {
     _prefs.setInt('genero', value);
   }
 
+  get email {
+    return _prefs.getString('email') ?? '';
+  }
+
+  set email(String value) {
+    _prefs.setString('email', value);
+  }
+
   //GET y SET del color secundario
   get colorSecundario {
     return _prefs.getBool('colorSecundario') ?? false;
@@ -46,5 +54,13 @@ class PreferenciasUsuario {
 
   set nombreUsuario(String value) {
     _prefs.setString('nombreUsuario', value);
+  }
+
+  get ultimaPagina {
+    return _prefs.getString('ultimaPagina') ?? '/';
+  }
+
+  set ultimaPagina(String value) {
+    _prefs.setString('ultimaPagina', value);
   }
 }

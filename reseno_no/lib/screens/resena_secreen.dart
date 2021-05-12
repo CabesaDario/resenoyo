@@ -1,16 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
+import 'package:reseno_no/screens/mis_resenas.dart';
+import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/widgets/menu_slider.dart';
 
 class ResenaScreen extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
+  static final String routeName = 'resena';
+  final prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
+    prefs.ultimaPagina = ResenaScreen.routeName;
     double _ratingController;
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
     final _screenSize = MediaQuery.of(context).size;
+    prefs.ultimaPagina = ResenaScreen.routeName;
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
@@ -58,10 +65,29 @@ class ResenaScreen extends StatelessWidget {
               child: Text('Reseñar'),
               onPressed: () {
                 /*TODO mostrar snackbar*/
+                agregarResena(
+                    _textEditingController.text, pelicula, _ratingController);
                 print('Hecho');
               }),
         ],
       ),
+    );
+  }
+
+  Future<void> agregarResena(
+      String resena, Pelicula pelicula, double puntuasione) async {
+    //la referencia a la coleccion de reseñas de esa pelicula
+    CollectionReference resenasRef = FirebaseFirestore.instance
+        .collection('usuarios')
+        .doc(prefs.email)
+        .collection(pelicula.id.toString());
+    await resenasRef.add(
+      Resena(
+              text: resena,
+              peli: pelicula.title,
+              rating: puntuasione,
+              time: DateTime.now())
+          .toJson(),
     );
   }
 }

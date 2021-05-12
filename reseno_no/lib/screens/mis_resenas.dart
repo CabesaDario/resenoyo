@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
+import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/widgets/menu_slider.dart';
 
 class MisResenas extends StatelessWidget {
+  static final String routeName = 'mis_resenas';
+  final prefs = new PreferenciasUsuario();
   final List<Pelicula> pelis = [
     new Pelicula(
         posterPath: "/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg",
@@ -84,11 +87,14 @@ class MisResenas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    prefs.ultimaPagina = MisResenas.routeName;
     List<Resena> resenas = [];
     for (int i = 0; i < pelis.length; i++) {
       resenas.add(new Resena(
+          time: DateTime.now(),
+          rating: 2.0,
           text: "Muy buena eh de verdad que esta chulisima hostias jajajajaja",
-          peli: pelis[i]));
+          peli: 'lo que el viento se llevó'));
     }
     return Scaffold(
       drawer: NavDrawer(),
@@ -117,8 +123,31 @@ class MisResenas extends StatelessWidget {
 }
 
 class Resena {
-  String text;
-  Pelicula peli;
+  Resena(
+      {@required this.text,
+      @required this.peli,
+      @required this.time,
+      @required this.rating});
 
-  Resena({this.text, this.peli});
+  Resena.fromJson(Map<String, Object> json)
+      : this(
+          text: json['text'] as String,
+          peli: json['peli'] as String,
+          time: json['time'] as DateTime,
+          rating: json['rating'] as double,
+        );
+
+  final String text;
+  final String peli;
+  final double rating;
+  final DateTime time;
+
+  Map<String, Object> toJson() {
+    return {
+      'text': text,
+      'peli': peli,
+      'TIME': time,
+      'rating': rating,
+    };
+  }
 }

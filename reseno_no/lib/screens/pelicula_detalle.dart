@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:reseno_no/models/actores_model.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
 import 'package:reseno_no/providers/peliculas_provider.dart';
+import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/widgets/menu_slider.dart';
 
 class PeliculaDetalle extends StatelessWidget {
+  static final String routeName = 'detalle';
+  final prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
-
+    prefs.ultimaPagina = PeliculaDetalle.routeName;
     return Scaffold(
       drawer: NavDrawer(),
       body: CustomScrollView(

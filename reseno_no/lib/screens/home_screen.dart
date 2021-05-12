@@ -8,11 +8,13 @@ import 'package:reseno_no/widgets/menu_slider.dart';
 import 'package:reseno_no/widgets/movie_horizontal.dart';
 
 class HomeScreen extends StatelessWidget {
+  static final String routeName = 'home';
   final peliculasProvider = PeliculasProvider();
+  final prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
     peliculasProvider.getPopulares();
-    final prefs = new PreferenciasUsuario();
+    prefs.ultimaPagina = HomeScreen.routeName;
     return Scaffold(
       appBar: AppBar(
         title: Text('Películas en cines'),

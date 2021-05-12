@@ -22,6 +22,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final prefs = PreferenciasUsuario();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,13 +64,14 @@ class MyApp extends StatelessWidget {
           overline: TextStyle(fontFamily: 'NotoSans'),
         ),
       ),
+      initialRoute: '/',
       routes: {
         '/': (context) => LoginScreen(),
-        'home': (context) => HomeScreen(),
-        'settings': (context) => SettingsScreen(),
-        'mis_resenas': (context) => MisResenas(),
-        'detalle': (context) => PeliculaDetalle(),
-        'resena': (context) => ResenaScreen(),
+        HomeScreen.routeName: (context) => HomeScreen(),
+        SettingsScreen.routeName: (context) => SettingsScreen(),
+        MisResenas.routeName: (context) => MisResenas(),
+        PeliculaDetalle.routeName: (context) => PeliculaDetalle(),
+        ResenaScreen.routeName: (context) => ResenaScreen(),
       },
     );
   }
