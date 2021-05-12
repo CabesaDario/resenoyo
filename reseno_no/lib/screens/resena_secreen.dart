@@ -10,11 +10,12 @@ class ResenaScreen extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
   static final String routeName = 'resena';
   final prefs = new PreferenciasUsuario();
+  final snackBarComplete = SnackBar(content: Text('Su reseña se ha subido'));
+  final TextEditingController _ratingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     prefs.ultimaPagina = ResenaScreen.routeName;
-    double _ratingController;
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
     final _screenSize = MediaQuery.of(context).size;
     prefs.ultimaPagina = ResenaScreen.routeName;
@@ -46,8 +47,7 @@ class ResenaScreen extends StatelessWidget {
               color: Colors.amber,
             ),
             onRatingUpdate: (rating) {
-              _ratingController = rating;
-              print(_ratingController);
+              _ratingController.text = rating.toString();
             },
           ),
           Flexible(
@@ -64,10 +64,11 @@ class ResenaScreen extends StatelessWidget {
           TextButton(
               child: Text('Reseñar'),
               onPressed: () {
-                /*TODO mostrar snackbar*/
-                agregarResena(
-                    _textEditingController.text, pelicula, _ratingController);
-                print('Hecho');
+                FocusScope.of(context).unfocus();
+                agregarResena(_textEditingController.text, pelicula,
+                    _ratingController.text);
+                _textEditingController.clear();
+                ScaffoldMessenger.of(context).showSnackBar(snackBarComplete);
               }),
         ],
       ),
@@ -75,7 +76,7 @@ class ResenaScreen extends StatelessWidget {
   }
 
   Future<void> agregarResena(
-      String resena, Pelicula pelicula, double puntuasione) async {
+      String resena, Pelicula pelicula, String puntuasione) async {
     //la referencia a la coleccion de reseñas de esa pelicula
     CollectionReference resenasRef = FirebaseFirestore.instance
         .collection('usuarios')
