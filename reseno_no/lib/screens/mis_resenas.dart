@@ -92,7 +92,7 @@ class MisResenas extends StatelessWidget {
     for (int i = 0; i < pelis.length; i++) {
       resenas.add(new Resena(
           time: DateTime.now(),
-          rating: '2.0',
+          rating: 2.0,
           text: "Muy buena eh de verdad que esta chulisima hostias jajajajaja",
           peli: 'lo que el viento se llevó'));
     }
@@ -134,12 +134,12 @@ class Resena {
           text: json['text'] as String,
           peli: json['peli'] as String,
           time: json['time'] as DateTime,
-          rating: json['rating'] as String,
+          rating: json['rating'] as double,
         );
 
   final String text;
   final String peli;
-  final String rating;
+  final double rating;
   final DateTime time;
 
   Map<String, Object> toJson() {

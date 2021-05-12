@@ -11,7 +11,7 @@ class ResenaScreen extends StatelessWidget {
   static final String routeName = 'resena';
   final prefs = new PreferenciasUsuario();
   final snackBarComplete = SnackBar(content: Text('Su reseña se ha subido'));
-  final TextEditingController _ratingController = TextEditingController();
+  double _ratingController = 3.0;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class ResenaScreen extends StatelessWidget {
               color: Colors.amber,
             ),
             onRatingUpdate: (rating) {
-              _ratingController.text = rating.toString();
+              _ratingController = rating;
             },
           ),
           Flexible(
@@ -65,8 +65,8 @@ class ResenaScreen extends StatelessWidget {
               child: Text('Reseñar'),
               onPressed: () {
                 FocusScope.of(context).unfocus();
-                agregarResena(_textEditingController.text, pelicula,
-                    _ratingController.text);
+                agregarResena(
+                    _textEditingController.text, pelicula, _ratingController);
                 _textEditingController.clear();
                 ScaffoldMessenger.of(context).showSnackBar(snackBarComplete);
               }),
@@ -76,7 +76,7 @@ class ResenaScreen extends StatelessWidget {
   }
 
   Future<void> agregarResena(
-      String resena, Pelicula pelicula, String puntuasione) async {
+      String resena, Pelicula pelicula, double puntuasione) async {
     //la referencia a la coleccion de reseñas de esa pelicula
     CollectionReference resenasRef = FirebaseFirestore.instance
         .collection('usuarios')
