@@ -6,6 +6,7 @@ import 'package:reseno_no/screens/mis_resenas.dart';
 import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/widgets/menu_slider.dart';
 
+// ignore: must_be_immutable
 class ResenaScreen extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
   static final String routeName = 'resena';
