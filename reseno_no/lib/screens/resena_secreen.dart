@@ -79,17 +79,14 @@ class ResenaScreen extends StatelessWidget {
   Future<void> agregarResena(
       String resena, Pelicula pelicula, double puntuasione) async {
     //la referencia a la coleccion de reseñas de esa pelicula
-    CollectionReference resenasRef = FirebaseFirestore.instance
-        .collection('usuarios')
-        .doc(prefs.email)
-        .collection(pelicula.id.toString());
-    await resenasRef.add(
-      Resena(
-              text: resena,
-              peli: pelicula.title,
-              rating: puntuasione,
-              time: DateTime.now())
-          .toJson(),
-    );
+    CollectionReference resenasRef =
+        FirebaseFirestore.instance.collection('resenas');
+    await resenasRef.add({
+      'user': prefs.email,
+      'text': resena,
+      'peli': pelicula.title,
+      'rating': puntuasione,
+      'time': DateTime.now(),
+    });
   }
 }

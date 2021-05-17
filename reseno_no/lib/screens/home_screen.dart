@@ -36,7 +36,6 @@ class HomeScreen extends StatelessWidget {
         child: (Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text('Género: ${prefs.genero}'),
             _swiperPeliculas(),
             _footer(context),
           ],
