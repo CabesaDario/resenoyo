@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
-import 'package:reseno_no/screens/mis_resenas.dart';
 import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/widgets/menu_slider.dart';
 
@@ -12,6 +11,8 @@ class ResenaScreen extends StatelessWidget {
   static final String routeName = 'resena';
   final prefs = new PreferenciasUsuario();
   final snackBarComplete = SnackBar(content: Text('Su reseña se ha subido'));
+  final snackBarBad = SnackBar(
+      content: Text('La reseña es demasiado corta para ser publicada'));
   double _ratingController = 3.0;
 
   @override
@@ -65,11 +66,15 @@ class ResenaScreen extends StatelessWidget {
           TextButton(
               child: Text('Reseñar'),
               onPressed: () {
-                FocusScope.of(context).unfocus();
-                agregarResena(
-                    _textEditingController.text, pelicula, _ratingController);
-                _textEditingController.clear();
-                ScaffoldMessenger.of(context).showSnackBar(snackBarComplete);
+                FocusScope.of(context).requestFocus(FocusNode());
+                if (_textEditingController.text.length <= 5) {
+                  ScaffoldMessenger.of(context).showSnackBar(snackBarBad);
+                } else {
+                  agregarResena(
+                      _textEditingController.text, pelicula, _ratingController);
+                  _textEditingController.clear();
+                  ScaffoldMessenger.of(context).showSnackBar(snackBarComplete);
+                }
               }),
         ],
       ),
@@ -81,12 +86,15 @@ class ResenaScreen extends StatelessWidget {
     //la referencia a la coleccion de reseñas de esa pelicula
     CollectionReference resenasRef =
         FirebaseFirestore.instance.collection('resenas');
+    DocumentReference usuarioRef =
+        FirebaseFirestore.instance.collection('usuarios').doc(prefs.email);
     await resenasRef.add({
       'user': prefs.email,
       'text': resena,
       'peli': pelicula.title,
       'rating': puntuasione,
       'time': DateTime.now(),
-    });
+      'poster_path': pelicula.posterPath,
+    }).then((value) => usuarioRef.update({'${value.id}': '${value.id}'}));
   }
 }

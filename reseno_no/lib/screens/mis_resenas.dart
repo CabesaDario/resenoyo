@@ -15,34 +15,77 @@ class _MisResenasState extends State<MisResenas> {
 
   @override
   Widget build(BuildContext context) {
-    Query resenasRef = FirebaseFirestore.instance
-        .collection('resenas')
-        .where('user', isEqualTo: prefs.email);
     prefs.ultimaPagina = MisResenas.routeName;
+
     return Scaffold(
         drawer: NavDrawer(),
         appBar: AppBar(
           centerTitle: true,
           title: Text('tus reseñas'),
         ),
-        body: FutureBuilder<QuerySnapshot>(
-            future: resenasRef.get(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              } else {
-                final List<DocumentSnapshot> documents = snapshot.data.docs;
-                return ListView(
-                    children: documents
-                        .map((doc) => Card(
-                              child: ListTile(
-                                title: Text(doc['peli']),
-                                subtitle: Text(doc['text']),
-                              ),
-                            ))
-                        .toList());
-              }
-            }));
+        body: FutureBuilder<List<String>>(
+          future: sacarReferencias(prefs.email),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasData && snapshot.data.length == 0) {
+              return Center(child: Text("Aún no has añadido ninguna reseña"));
+            } else {
+              return listaFutureBuilder(snapshot.data);
+            }
+          },
+        ));
+  }
+
+  Future<List<String>> sacarReferencias(String email) async {
+    //CREar un método que devuelva un futuro de lista de reseñas
+    //mirar el de star wars
+    //1a peticion -> obtengo todos los ids, una vez tenga todos los ids, hago peticiones
+    //a nivel individual para obtener las reseñas a nivel individual y todo ello con sus respectivos awaits
+    final List<String> listaIds = [];
+    final DocumentReference pelisResenadas =
+        FirebaseFirestore.instance.collection('usuarios').doc(email);
+    await pelisResenadas.get().then((value) {
+      listaIds.addAll(value.data().keys);
+      print(value.data().values);
+    });
+    listaIds.forEach((element) {
+      print(element);
+    });
+    return listaIds;
+  }
+
+  Widget listaFutureBuilder(List<String> refs) {
+    final CollectionReference resenaRef =
+        FirebaseFirestore.instance.collection('resenas');
+    return ListView.builder(
+        itemCount: refs.length,
+        itemBuilder: (context, index) {
+          return FutureBuilder(
+              future: resenaRef.doc('${refs[index]}').get(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return Card(
+                    child: ListTile(
+                      leading: Image(
+                          image: NetworkImage(
+                              getPosterImage(snapshot.data['poster_path']))),
+                      title: Text(snapshot.data['text'],
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                  );
+                }
+              });
+        });
+  }
+
+  String getPosterImage(data) {
+    if (data == '' || data == null) {
+      return 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-no-image-available-icon-flat-vector.jpg?ver=6';
+    }
+    return 'https://image.tmdb.org/t/p/w500/$data';
   }
 }
 
@@ -75,18 +118,3 @@ class Resena {
     };
   }
 }
-/*ListView.separated(
-            padding: const EdgeInsets.all(8),
-            itemCount: pelis.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  resenas[index].text,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                trailing: Image(
-                    height: 50.0, image: NetworkImage(pelis[index].getPosterImg())),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) => const Divider(),
-          )*/

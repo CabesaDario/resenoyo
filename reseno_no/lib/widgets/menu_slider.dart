@@ -8,10 +8,7 @@ class NavDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text(
-              'Side menu',
-              style: TextStyle(color: Colors.white, fontSize: 25),
-            ),
+            child: Container(),
             decoration: BoxDecoration(
                 color: Colors.green,
                 image: DecorationImage(
