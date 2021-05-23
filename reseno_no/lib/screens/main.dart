@@ -6,6 +6,7 @@ import 'package:reseno_no/providers/dark_theme_provider.dart';
 import 'package:reseno_no/screens/login_screen.dart';
 import 'package:reseno_no/screens/mis_resenas.dart';
 import 'package:reseno_no/screens/pelicula_detalle.dart';
+import 'package:reseno_no/screens/resena_detalle.dart';
 import 'package:reseno_no/screens/resena_secreen.dart';
 import 'package:reseno_no/screens/settings_screen.dart';
 import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           initialRoute: 'loguin',
           routes: {
             'loguin': (context) => LoginScreen(),
+            'resena_detalle': (context) => ResenaDetalle(),
             HomeScreen.routeName: (context) => HomeScreen(),
             SettingsScreen.routeName: (context) => SettingsScreen(),
             MisResenas.routeName: (context) => MisResenas(),

@@ -15,12 +15,6 @@ class PreferenciasUsuario {
     this._prefs = await SharedPreferences.getInstance();
   }
 
-  //No se usan estas propiedades, es
-  //por motivos docentes
-  //bool _colorSecundario;
-  //int _genero;
-  //String _nombre;
-
   //GET y SET del genero
   get darkMode {
     return _prefs.getBool('dark_mode') ?? false;

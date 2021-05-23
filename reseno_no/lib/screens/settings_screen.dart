@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:reseno_no/providers/dark_theme_provider.dart';
 import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/widgets/menu_slider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   static final String routeName = 'settings';
@@ -29,13 +28,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _textController = new TextEditingController(text: _nombre);
   }
 
-  /*cargarPref() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _darkMode = prefs.getBool('dark_mode');
-    _cantidadPopulares = prefs.getInt('cantidad_pop');
-    setState(() {});
-  }*/
-
   _setSelectedRadio(int valor) async {
     prefs.cantidadPopulares = valor;
     _cantidadPopulares = valor;
@@ -44,6 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _darkMode = prefs.darkMode;
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return Scaffold(
       drawer: NavDrawer(),
@@ -89,10 +82,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: TextField(
+            maxLength: 7,
             controller: _textController,
             decoration: InputDecoration(
                 labelText: 'Nick', helperText: 'Tu nick de usuario'),
-            onChanged: (value) {},
+            onChanged: (value) {
+              prefs.nombreUsuario = value;
+            },
           ),
         ),
       ]),

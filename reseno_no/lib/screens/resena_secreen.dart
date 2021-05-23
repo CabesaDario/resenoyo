@@ -39,7 +39,7 @@ class ResenaScreen extends StatelessWidget {
           ),
           RatingBar.builder(
             initialRating: 3,
-            minRating: 1,
+            minRating: 0,
             direction: Axis.horizontal,
             allowHalfRating: true,
             itemCount: 5,

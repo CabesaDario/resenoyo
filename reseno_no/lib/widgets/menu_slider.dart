@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 
 class NavDrawer extends StatelessWidget {
+  final prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -8,7 +10,25 @@ class NavDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Container(),
+            child: Text(
+              prefs.nombreUsuario,
+              style: TextStyle(
+                fontSize: 45.0,
+                color: Colors.white,
+                shadows: <Shadow>[
+                  Shadow(
+                    offset: Offset(10.0, 10.0),
+                    blurRadius: 3.0,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                  Shadow(
+                    offset: Offset(10.0, 10.0),
+                    blurRadius: 8.0,
+                    color: Color.fromARGB(125, 0, 0, 255),
+                  ),
+                ],
+              ),
+            ),
             decoration: BoxDecoration(
                 color: Colors.green,
                 image: DecorationImage(
@@ -25,21 +45,21 @@ class NavDrawer extends StatelessWidget {
             title: Text('Mis reseñas'),
             onTap: () => {Navigator.pushNamed(context, 'mis_resenas')},
           ),
-          ListTile(
+          /*ListTile(
             leading: Icon(Icons.verified_user),
             title: Text('Profile'),
             onTap: () => {Navigator.of(context).pop()},
-          ),
+          ), TODO implementar pantalla de perfil de usuario y de feedback si es necesario*/
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Ajustes'),
             onTap: () => {Navigator.pushNamed(context, 'settings')},
           ),
-          ListTile(
+          /*ListTile(
             leading: Icon(Icons.border_color),
             title: Text('Feedback'),
             onTap: () => {Navigator.of(context).pop()},
-          ),
+          ),*/
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),

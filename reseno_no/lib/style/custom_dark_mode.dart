@@ -11,13 +11,13 @@ class Styles {
         backgroundColor: Colors.black,
         indicatorColor: Color(0xff0E1D36),
         buttonColor: Color(0xff3B3B3B),
-        hintColor: Color(0xff280C0B),
+        hintColor: Colors.teal[600],
         highlightColor: Color(0xff372901),
         hoverColor: Color(0xff3A3A3B),
         focusColor: Color(0xff0B2512),
         disabledColor: Colors.grey,
         cardColor: Color(0xFF151515),
-        canvasColor: Colors.black,
+        canvasColor: Colors.white10,
         brightness: Brightness.dark,
       );
     } else {

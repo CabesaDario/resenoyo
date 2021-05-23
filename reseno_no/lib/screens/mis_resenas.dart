@@ -47,10 +47,6 @@ class _MisResenasState extends State<MisResenas> {
         FirebaseFirestore.instance.collection('usuarios').doc(email);
     await pelisResenadas.get().then((value) {
       listaIds.addAll(value.data().keys);
-      print(value.data().values);
-    });
-    listaIds.forEach((element) {
-      print(element);
     });
     return listaIds;
   }
@@ -74,6 +70,19 @@ class _MisResenasState extends State<MisResenas> {
                               getPosterImage(snapshot.data['poster_path']))),
                       title: Text(snapshot.data['text'],
                           overflow: TextOverflow.ellipsis),
+                      subtitle: Text(snapshot.data['rating'].toString()),
+                      trailing: IconButton(
+                        icon: Icon(Icons.details),
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'resena_detalle',
+                              arguments: new Resena(
+                                  poster: snapshot.data['poster_path'],
+                                  text: snapshot.data['text'],
+                                  peli: snapshot.data['peli'],
+                                  time: snapshot.data['time'].toDate(),
+                                  rating: snapshot.data['rating']));
+                        },
+                      ),
                     ),
                   );
                 }
@@ -90,31 +99,34 @@ class _MisResenasState extends State<MisResenas> {
 }
 
 class Resena {
-  Resena(
-      {@required this.text,
-      @required this.peli,
-      @required this.time,
-      @required this.rating});
+  Resena({
+    @required this.text,
+    @required this.peli,
+    @required this.time,
+    @required this.rating,
+    @required this.poster,
+  });
 
-  Resena.fromJson(Map<String, Object> json)
+  /*Resena.fromJson(Map<String, Object> json)
       : this(
           text: json['text'] as String,
           peli: json['peli'] as String,
           time: json['time'] as DateTime,
           rating: json['rating'] as double,
-        );
+        );*/
 
   final String text;
+  final String poster;
   final String peli;
   final double rating;
   final DateTime time;
 
-  Map<String, Object> toJson() {
+  /*Map<String, Object> toJson() {
     return {
       'text': text,
       'peli': peli,
       'time': time,
       'rating': rating,
     };
-  }
+  }*/
 }
