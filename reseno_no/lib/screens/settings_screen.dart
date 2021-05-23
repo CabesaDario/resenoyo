@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reseno_no/providers/dark_theme_provider.dart';
 import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/widgets/menu_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,9 +12,9 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _colorSecundario = false;
-  int _genero;
-  String _nombre = 'Pedro';
+  bool _darkMode = false;
+  int _cantidadPopulares;
+  String _nombre = '';
 
   TextEditingController _textController;
 
@@ -21,62 +23,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-
     prefs.ultimaPagina = SettingsScreen.routeName;
-    _genero = prefs.genero;
-    _colorSecundario = prefs.colorSecundario;
+    _darkMode = prefs.darkMode;
+    _cantidadPopulares = prefs.cantidadPopulares;
     _textController = new TextEditingController(text: _nombre);
   }
 
-  cargarPref() async {
+  /*cargarPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _genero = prefs.getInt('genero');
+    _darkMode = prefs.getBool('dark_mode');
+    _cantidadPopulares = prefs.getInt('cantidad_pop');
     setState(() {});
-  }
+  }*/
 
   _setSelectedRadio(int valor) async {
-    prefs.genero = valor;
-    _genero = valor;
+    prefs.cantidadPopulares = valor;
+    _cantidadPopulares = valor;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
         centerTitle: true,
         title: Text('Ajustes'),
-        backgroundColor: (prefs.colorSecundario) ? Colors.teal : Colors.blue,
       ),
       body: ListView(children: [
-        Container(
-          padding: EdgeInsets.all(5.0),
-          child: Text(
-            'Settings',
-            style: TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold),
-          ),
-        ),
         Divider(),
         SwitchListTile(
-          value: _colorSecundario,
-          title: Text('Color secundario'),
+          value: _darkMode,
+          title: Text('Modo noche'),
           onChanged: (value) {
             setState(() {
-              _colorSecundario = value;
-              prefs.colorSecundario = value;
+              _darkMode = value;
+              prefs.darkMode = value;
+              themeChange.darkTheme = value;
             });
           },
         ),
+        Divider(),
+        Container(
+            padding: EdgeInsets.all(15.0),
+            child: Text('Cantidad de populares mostradas')),
         RadioListTile(
-            value: 1,
-            title: Text('Masculino'),
-            groupValue: _genero,
+            value: 5,
+            title: Text('5'),
+            groupValue: _cantidadPopulares,
             onChanged: _setSelectedRadio),
         RadioListTile(
-          value: 2,
-          title: Text('Femenino'),
-          groupValue: _genero,
+          value: 10,
+          title: Text('10'),
+          groupValue: _cantidadPopulares,
+          onChanged: _setSelectedRadio,
+        ),
+        RadioListTile(
+          value: 15,
+          title: Text('15'),
+          groupValue: _cantidadPopulares,
           onChanged: _setSelectedRadio,
         ),
         Divider(),
@@ -85,8 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: TextField(
             controller: _textController,
             decoration: InputDecoration(
-                labelText: 'Nombre',
-                helperText: 'Nombre de la persona usando el teléfono'),
+                labelText: 'Nick', helperText: 'Tu nick de usuario'),
             onChanged: (value) {},
           ),
         ),

@@ -40,31 +40,32 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       child: FlutterLogin(
+        hideForgotPasswordButton: true, //TODO ver si se puede implementar
         theme: LoginTheme(
           pageColorLight: Colors.transparent,
           pageColorDark: Colors.transparent,
         ),
         messages: LoginMessages(
+            passwordHint: 'Contraseña',
             confirmPasswordError: 'Las contraseñas no coinciden',
             signupButton: 'Registrarse',
             forgotPasswordButton: '¿Olvidó la contraseña?'),
         emailValidator: (value) {
-          return null;
-          /*//todo quitar el null de ahi para que valide
+          if (value.isEmpty) {
+            return "El email no puede estar vacío";
+          }
           if (!value.contains('@') || !value.endsWith('.com')) {
             return "formato de email inválido";
           }
-          return null;*/
+          return null;
         },
         passwordValidator: (value) {
-          return null;
-          //todo quitar el null de ahi para que valide
-          /*if (value.isEmpty) {
+          if (value.isEmpty) {
             return 'La contraseña está vacía';
-          }else if(value.length < 6){
+          } else if (value.length < 6) {
             return 'Contraseña demasiado débil';
           }
-          return null;*/
+          return null;
         },
 
         onLogin: (loginData) {
@@ -87,8 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<String> _signInWithEmailAndPassword(LoginData data) async {
     try {
       //await _auth.signInAnonymously();
-      /*todo esto es la autentacion verdadera, cuando no quiera
-          logarme anonimo, lo descomento*/
       User user = (await _auth.signInWithEmailAndPassword(
         email: data.name,
         password: data.password,
@@ -113,9 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
           FirebaseFirestore.instance.collection('usuarios');
       await usuarios
           .doc(email)
-          .set({
-            'name': email,
-          })
+          .set({})
           .then((value) => print("Usuario Añadido"))
           .catchError((error) => print("Error al añadir usuario: $error"));
       prefs.email = user.email;

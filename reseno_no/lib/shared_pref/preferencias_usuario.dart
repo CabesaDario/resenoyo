@@ -22,12 +22,12 @@ class PreferenciasUsuario {
   //String _nombre;
 
   //GET y SET del genero
-  get genero {
-    return _prefs.getInt('genero') ?? 1;
+  get darkMode {
+    return _prefs.getBool('dark_mode') ?? false;
   }
 
-  set genero(int value) {
-    _prefs.setInt('genero', value);
+  set darkMode(bool value) {
+    _prefs.setBool('dark_mode', value);
   }
 
   get email {
@@ -39,12 +39,12 @@ class PreferenciasUsuario {
   }
 
   //GET y SET del color secundario
-  get colorSecundario {
-    return _prefs.getBool('colorSecundario') ?? false;
+  get cantidadPopulares {
+    return _prefs.getInt('cantidad_pop') ?? 5;
   }
 
-  set colorSecundario(bool value) {
-    _prefs.setBool('colorSecundario', value);
+  set cantidadPopulares(int value) {
+    _prefs.setInt('cantidad_pop', value);
   }
 
   //GET y SET del nombre de usuario

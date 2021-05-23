@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
+import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 
 class CardSwiper extends StatelessWidget {
   final List<Pelicula> peliculas;
-
+  final prefs = PreferenciasUsuario();
   CardSwiper({@required this.peliculas});
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class CardSwiper extends StatelessWidget {
             ),
           );
         },
-        itemCount: 5,
+        itemCount: prefs.cantidadPopulares,
         //pagination: new SwiperPagination(),
         //control: new SwiperControl(),
         itemWidth: _screenSize.width * 0.7,

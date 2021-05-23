@@ -18,7 +18,6 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Películas en cines'),
-        backgroundColor: (prefs.colorSecundario) ? Colors.teal : Colors.blue,
         actions: [
           IconButton(
               icon: Icon(Icons.search),
