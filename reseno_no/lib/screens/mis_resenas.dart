@@ -46,8 +46,11 @@ class _MisResenasState extends State<MisResenas> {
     final DocumentReference pelisResenadas =
         FirebaseFirestore.instance.collection('usuarios').doc(email);
     await pelisResenadas.get().then((value) {
-      listaIds.addAll(value.data().keys);
+      value.data().forEach((key, value) {
+        listaIds.add(key);
+      });
     });
+    listaIds.remove('count');
     return listaIds;
   }
 
@@ -58,7 +61,7 @@ class _MisResenasState extends State<MisResenas> {
         itemCount: refs.length,
         itemBuilder: (context, index) {
           return FutureBuilder(
-              future: resenaRef.doc('${refs[index]}').get(),
+              future: resenaRef.doc('${prefs.email + refs[index]}').get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
@@ -71,23 +74,41 @@ class _MisResenasState extends State<MisResenas> {
                       title: Text(snapshot.data['text'],
                           overflow: TextOverflow.ellipsis),
                       subtitle: Text(snapshot.data['rating'].toString()),
-                      trailing: IconButton(
-                        icon: Icon(Icons.details),
-                        onPressed: () {
-                          Navigator.pushNamed(context, 'resena_detalle',
-                              arguments: new Resena(
-                                  poster: snapshot.data['poster_path'],
-                                  text: snapshot.data['text'],
-                                  peli: snapshot.data['peli'],
-                                  time: snapshot.data['time'].toDate(),
-                                  rating: snapshot.data['rating']));
-                        },
-                      ),
+                      trailing: Column(children: [
+                        IconButton(
+                          icon: Icon(Icons.coronavirus_sharp),
+                          onPressed: () {
+                            deleteResena(snapshot.data.id);
+                          },
+                        ),
+                        /*IconButton(
+                          icon: Icon(Icons.details),
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'resena_detalle',
+                                arguments: new Resena(
+                                    poster: snapshot.data['poster_path'],
+                                    text: snapshot.data['text'],
+                                    peli: snapshot.data['peli'],
+                                    time: snapshot.data['time'].toDate(),
+                                    rating: snapshot.data['rating']));
+                          },
+                        ),*/
+                      ]),
                     ),
                   );
                 }
               });
         });
+  }
+
+  Future<void> deleteResena(String id) async {
+    await FirebaseFirestore.instance.collection('resenas').doc(id).delete();
+    String idRef = id.substring(id.length - 1, id.length);
+    await FirebaseFirestore.instance
+        .collection('usuarios')
+        .doc(prefs.email)
+        .update({'$idRef': FieldValue.delete()});
+    setState(() {});
   }
 
   String getPosterImage(data) {

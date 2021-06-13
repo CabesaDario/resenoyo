@@ -89,7 +89,6 @@ class ResenaScreen extends StatelessWidget {
     DocumentReference usuarioRef =
         FirebaseFirestore.instance.collection('usuarios').doc(prefs.email);
     int ultimaCantidad = await getUltimo();
-    print(ultimaCantidad);
     await resenasRef.doc(prefs.email + '${ultimaCantidad + 1}').set({
       'user': prefs.email,
       'text': resena,
@@ -111,7 +110,7 @@ class ResenaScreen extends StatelessWidget {
         ultimo = snapshot.get('count');
       });
     } catch (e) {
-      print('es el primero');
+      //esta excepcion salta si hago referencia a un field inexistente, es decir la 1a vez que ese usuario agrege una reseña
       return ultimo;
     }
 
