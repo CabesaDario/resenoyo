@@ -67,21 +67,23 @@ class _MisResenasState extends State<MisResenas> {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   return Card(
-                    child: ListTile(
-                      leading: Image(
-                          image: NetworkImage(
-                              getPosterImage(snapshot.data['poster_path']))),
-                      title: Text(snapshot.data['text'],
-                          overflow: TextOverflow.ellipsis),
-                      subtitle: Text(snapshot.data['rating'].toString()),
-                      trailing: Column(children: [
-                        IconButton(
-                          icon: Icon(Icons.coronavirus_sharp),
-                          onPressed: () {
-                            deleteResena(snapshot.data.id);
-                          },
+                    child: Dismissible(
+                      background: Container(color: Colors.red),
+                      key: UniqueKey(),
+                      onDismissed: (direction) {
+                        deleteResena(snapshot.data.id, refs);
+                      },
+                      child: ListTile(
+                        leading: Image(
+                            image: NetworkImage(
+                                getPosterImage(snapshot.data['poster_path']))),
+                        title: Text(
+                          snapshot.data['text'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
-                        /*IconButton(
+                        subtitle: Text(snapshot.data['rating'].toString()),
+                        trailing: IconButton(
                           icon: Icon(Icons.details),
                           onPressed: () {
                             Navigator.pushNamed(context, 'resena_detalle',
@@ -92,8 +94,8 @@ class _MisResenasState extends State<MisResenas> {
                                     time: snapshot.data['time'].toDate(),
                                     rating: snapshot.data['rating']));
                           },
-                        ),*/
-                      ]),
+                        ),
+                      ),
                     ),
                   );
                 }
@@ -101,14 +103,13 @@ class _MisResenasState extends State<MisResenas> {
         });
   }
 
-  Future<void> deleteResena(String id) async {
+  Future<void> deleteResena(String id, List<String> refs) async {
+    String idRef = id.substring(prefs.email.length, id.length);
     await FirebaseFirestore.instance.collection('resenas').doc(id).delete();
-    String idRef = id.substring(id.length - 1, id.length);
     await FirebaseFirestore.instance
         .collection('usuarios')
         .doc(prefs.email)
         .update({'$idRef': FieldValue.delete()});
-    setState(() {});
   }
 
   String getPosterImage(data) {
