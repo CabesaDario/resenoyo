@@ -88,13 +88,33 @@ class ResenaScreen extends StatelessWidget {
         FirebaseFirestore.instance.collection('resenas');
     DocumentReference usuarioRef =
         FirebaseFirestore.instance.collection('usuarios').doc(prefs.email);
-    await resenasRef.add({
+    int ultimaCantidad = await getUltimo();
+    print(ultimaCantidad);
+    await resenasRef.doc(prefs.email + '${ultimaCantidad + 1}').set({
       'user': prefs.email,
       'text': resena,
       'peli': pelicula.title,
       'rating': puntuasione,
       'time': DateTime.now(),
       'poster_path': pelicula.posterPath,
-    }).then((value) => usuarioRef.update({'${value.id}': '${value.id}'}));
+    });
+    await usuarioRef
+        .update({'${ultimaCantidad + 1}': '', 'count': (ultimaCantidad + 1)});
+  }
+
+  Future<int> getUltimo() async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('usuarios').doc(prefs.email);
+    int ultimo = 0;
+    try {
+      await documentReference.get().then((snapshot) {
+        ultimo = snapshot.get('count');
+      });
+    } catch (e) {
+      print('es el primero');
+      return ultimo;
+    }
+
+    return ultimo;
   }
 }
