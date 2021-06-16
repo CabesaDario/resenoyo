@@ -6,16 +6,6 @@ class DataSearch extends SearchDelegate {
   String seleccion = '';
   final peliculasProvider = new PeliculasProvider();
 
-  final peliculas = [
-    'La cosa',
-    'El orfanato',
-    'Lo que el viento se llevó',
-    'El exorcista',
-    'La milla verde'
-  ];
-
-  final peliculasRecientes = ['Midsommar', 'Hereditary', 'Us'];
-
   @override
   List<Widget> buildActions(BuildContext context) {
     // Son las acciones de nuestro search, ejemplo, un iconito para limpiar el texto

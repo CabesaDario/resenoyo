@@ -22,13 +22,6 @@ class PeliculaDetalle extends StatelessWidget {
               SizedBox(height: 10.0),
               _posterTitulo(pelicula, context),
               _descripcion(pelicula),
-              _descripcion(pelicula),
-              _descripcion(pelicula),
-              _descripcion(pelicula),
-              _descripcion(pelicula),
-              _descripcion(pelicula),
-              _descripcion(pelicula),
-              _descripcion(pelicula),
               _crearCasting(pelicula),
             ]),
           )
@@ -115,7 +108,13 @@ class PeliculaDetalle extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       child: Text(
-        pelicula.overview,
+        pelicula.overview +
+            "\n\nFecha de estreno: " +
+            pelicula.releaseDate +
+            "\n\nPara adultos: " +
+            (pelicula.adult ? "Sí" : "No") +
+            "\n\nTítulo original: " +
+            pelicula.title,
         textAlign: TextAlign.justify,
       ),
     );
