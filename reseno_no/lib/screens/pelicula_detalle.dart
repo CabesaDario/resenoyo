@@ -114,7 +114,7 @@ class PeliculaDetalle extends StatelessWidget {
             "\n\nPara adultos: " +
             (pelicula.adult ? "Sí" : "No") +
             "\n\nTítulo original: " +
-            pelicula.title,
+            pelicula.originalTitle,
         textAlign: TextAlign.justify,
       ),
     );

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reseno_no/providers/dark_theme_provider.dart';
 import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 
 class NavDrawer extends StatelessWidget {
   final prefs = new PreferenciasUsuario();
+
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -63,7 +67,10 @@ class NavDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => {Navigator.of(context).pushReplacementNamed('loguin')},
+            onTap: () => {
+              themeChange.darkTheme = false,
+              Navigator.of(context).pushReplacementNamed('loguin')
+            },
           ),
         ],
       ),

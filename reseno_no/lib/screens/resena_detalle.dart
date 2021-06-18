@@ -11,46 +11,54 @@ class ResenaDetalle extends StatelessWidget {
     final formatter = new DateFormat('yyyy-MM-dd');
     final Resena resena = ModalRoute.of(context).settings.arguments;
     final _screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Reseña de ${resena.peli}'),
-        centerTitle: true,
-      ),
-      drawer: NavDrawer(),
-      body: Column(
-        children: [
-          ListTile(
-            title: Text(resena.peli),
-            subtitle: Text(formatter.format(resena.time)),
-            trailing: Image(
-              image: NetworkImage(getPosterImage(resena.poster)),
-              height: 50.0,
-            ),
-          ),
-          RatingBar.builder(
-            initialRating: resena.rating,
-            ignoreGestures: true,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) => Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            onRatingUpdate: (rating) {},
-          ),
-          Flexible(
-            child: Container(
-              padding: EdgeInsets.all(15.0),
-              width: _screenSize.width * 0.5,
-              child: Text(
-                resena.text,
-                textAlign: TextAlign.center,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => MisResenas(),
+        ));
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Reseña de ${resena.peli}'),
+          centerTitle: true,
+        ),
+        drawer: NavDrawer(),
+        body: Column(
+          children: [
+            ListTile(
+              title: Text(resena.peli),
+              subtitle: Text(formatter.format(resena.time)),
+              trailing: Image(
+                image: NetworkImage(getPosterImage(resena.poster)),
+                height: 50.0,
               ),
             ),
-          ),
-        ],
+            RatingBar.builder(
+              initialRating: resena.rating,
+              ignoreGestures: true,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              onRatingUpdate: (rating) {},
+            ),
+            Flexible(
+              child: Container(
+                padding: EdgeInsets.all(15.0),
+                width: _screenSize.width * 0.5,
+                child: Text(
+                  resena.text,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

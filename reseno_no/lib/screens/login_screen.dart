@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:provider/provider.dart';
+import 'package:reseno_no/providers/dark_theme_provider.dart';
 import 'package:reseno_no/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
@@ -32,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    prefs.resetPrefs();
     return Container(
       decoration: new BoxDecoration(
         image: DecorationImage(

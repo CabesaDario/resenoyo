@@ -15,6 +15,14 @@ class PreferenciasUsuario {
     this._prefs = await SharedPreferences.getInstance();
   }
 
+  resetPrefs() {
+    _prefs.setBool('dark_mode', false);
+    _prefs.setString('email', '');
+    _prefs.setString('nombreUsuario', '');
+    _prefs.setInt('cantidad_pop', 5);
+    _prefs.setString('ultimaPagina', '/'); //No implementado
+  }
+
   //GET y SET del genero
   get darkMode {
     return _prefs.getBool('dark_mode') ?? false;
