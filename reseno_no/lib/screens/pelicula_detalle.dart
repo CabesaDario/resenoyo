@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reseno_no/models/actores_model.dart';
 import 'package:reseno_no/models/peliculas_model.dart';
@@ -22,6 +23,19 @@ class PeliculaDetalle extends StatelessWidget {
               SizedBox(height: 10.0),
               _posterTitulo(pelicula, context),
               _descripcion(pelicula),
+              const Divider(
+                height: 20,
+                thickness: 5,
+                indent: 20,
+                endIndent: 20,
+              ),
+              _crearResenas(pelicula),
+              const Divider(
+                height: 20,
+                thickness: 5,
+                indent: 20,
+                endIndent: 20,
+              ),
               _crearCasting(pelicula),
             ]),
           )
@@ -118,6 +132,53 @@ class PeliculaDetalle extends StatelessWidget {
         textAlign: TextAlign.justify,
       ),
     );
+  }
+
+  Widget _crearResenas(Pelicula pelicula) {
+    CollectionReference collectionReference = FirebaseFirestore.instance
+        .collection('peliculas')
+        .doc('${pelicula.id}')
+        .collection('${pelicula.title}');
+    return FutureBuilder(
+        future: collectionReference
+            .orderBy('popularidad', descending: true)
+            .limit(5)
+            .get(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.data.docs.length == 0) {
+            return ListTile(
+              leading: Icon(Icons.book_online),
+              title: Text(
+                  'Nadie ha añadido una reseña de esta película todavía. ¡Sé el primero!'),
+            );
+          } else {
+            final documents = snapshot.data.docs;
+            FixedExtentScrollController fixedExtentScrollController =
+                new FixedExtentScrollController();
+            return Container(
+              height: 200,
+              child: ListWheelScrollView(
+                  controller: fixedExtentScrollController,
+                  physics: FixedExtentScrollPhysics(),
+                  itemExtent: 70.0,
+                  children: documents
+                      .map<Widget>((doc) => Card(
+                            child: ListTile(
+                              title: Text(
+                                doc['resena'],
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: Text(doc['nick'].length == 0
+                                  ? 'Anónimo'
+                                  : doc['nick']),
+                            ),
+                          ))
+                      .toList()),
+            );
+          }
+        });
   }
 
   Widget _crearCasting(Pelicula pelicula) {

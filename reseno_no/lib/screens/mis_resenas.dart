@@ -17,24 +17,30 @@ class _MisResenasState extends State<MisResenas> {
   Widget build(BuildContext context) {
     prefs.ultimaPagina = MisResenas.routeName;
 
-    return Scaffold(
-        drawer: NavDrawer(),
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('tus reseñas'),
-        ),
-        body: FutureBuilder<List<String>>(
-          future: sacarReferencias(prefs.email),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasData && snapshot.data.length == 0) {
-              return Center(child: Text("Aún no has añadido ninguna reseña"));
-            } else {
-              return listaFutureBuilder(snapshot.data);
-            }
-          },
-        ));
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushNamed('home');
+        return false;
+      },
+      child: Scaffold(
+          drawer: NavDrawer(),
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text('tus reseñas'),
+          ),
+          body: FutureBuilder<List<String>>(
+            future: sacarReferencias(prefs.email),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasData && snapshot.data.length == 0) {
+                return Center(child: Text("Aún no has añadido ninguna reseña"));
+              } else {
+                return listaFutureBuilder(snapshot.data);
+              }
+            },
+          )),
+    );
   }
 
   Future<List<String>> sacarReferencias(String email) async {

@@ -89,7 +89,8 @@ class ResenaScreen extends StatelessWidget {
     DocumentReference usuarioRef =
         FirebaseFirestore.instance.collection('usuarios').doc(prefs.email);
     int ultimaCantidad = await getUltimo();
-    await resenasRef.doc(prefs.email + '${ultimaCantidad + 1}').set({
+    String newId = prefs.email + '${ultimaCantidad + 1}';
+    await resenasRef.doc(newId).set({
       'user': prefs.email,
       'text': resena,
       'peli': pelicula.title,
@@ -99,6 +100,7 @@ class ResenaScreen extends StatelessWidget {
     });
     await usuarioRef
         .update({'${ultimaCantidad + 1}': '', 'count': (ultimaCantidad + 1)});
+    writePeliculas(pelicula.id, pelicula.title, newId, resena);
   }
 
   Future<int> getUltimo() async {
@@ -115,5 +117,18 @@ class ResenaScreen extends StatelessWidget {
     }
 
     return ultimo;
+  }
+
+  Future<void> writePeliculas(
+      int id, String title, String newId, String text) async {
+    CollectionReference collectionReference = FirebaseFirestore.instance
+        .collection('peliculas')
+        .doc('$id')
+        .collection('$title');
+    await collectionReference.doc(newId).set({
+      'nick': prefs.nombreUsuario,
+      'popularidad': 0,
+      'resena': text,
+    });
   }
 }
