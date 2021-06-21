@@ -12,7 +12,7 @@ import 'package:reseno_no/screens/settings_screen.dart';
 import 'package:reseno_no/shared_pref/preferencias_usuario.dart';
 import 'package:reseno_no/style/custom_dark_mode.dart';
 
-import 'home_screen.dart';
+import 'screens/home_screen.dart';
 
 Future<void> main() async {
   final prefs = new PreferenciasUsuario();
