@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:provider/provider.dart';
 import 'package:reseno_no/providers/dark_theme_provider.dart';
@@ -35,55 +36,61 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     prefs.resetPrefs();
-    return Container(
-      decoration: new BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/the-thing.jpg"),
-          fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () async {
+        SystemNavigator.pop();
+        return false;
+      },
+      child: Container(
+        decoration: new BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/the-thing.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: FlutterLogin(
-        hideForgotPasswordButton: true, //TODO ver si se puede implementar
-        theme: LoginTheme(
-          pageColorLight: Colors.transparent,
-          pageColorDark: Colors.transparent,
-        ),
-        messages: LoginMessages(
-            passwordHint: 'Contraseña',
-            confirmPasswordError: 'Las contraseñas no coinciden',
-            signupButton: 'Registrarse',
-            forgotPasswordButton: '¿Olvidó la contraseña?'),
-        emailValidator: (value) {
-          if (value.isEmpty) {
-            return "El email no puede estar vacío";
-          }
-          if (!value.contains('@') || !value.endsWith('.com')) {
-            return "formato de email inválido";
-          }
-          return null;
-        },
-        passwordValidator: (value) {
-          if (value.isEmpty) {
-            return 'La contraseña está vacía';
-          } else if (value.length < 6) {
-            return 'Contraseña demasiado débil';
-          }
-          return null;
-        },
+        child: FlutterLogin(
+          hideForgotPasswordButton: true, //TODO ver si se puede implementar
+          theme: LoginTheme(
+            pageColorLight: Colors.transparent,
+            pageColorDark: Colors.transparent,
+          ),
+          messages: LoginMessages(
+              passwordHint: 'Contraseña',
+              confirmPasswordError: 'Las contraseñas no coinciden',
+              signupButton: 'Registrarse',
+              forgotPasswordButton: '¿Olvidó la contraseña?'),
+          emailValidator: (value) {
+            if (value.isEmpty) {
+              return "El email no puede estar vacío";
+            }
+            if (!value.contains('@') || !value.endsWith('.com')) {
+              return "formato de email inválido";
+            }
+            return null;
+          },
+          passwordValidator: (value) {
+            if (value.isEmpty) {
+              return 'La contraseña está vacía';
+            } else if (value.length < 6) {
+              return 'Contraseña demasiado débil';
+            }
+            return null;
+          },
 
-        onLogin: (loginData) {
-          return _signInWithEmailAndPassword(loginData);
-        },
-        onSignup: (loginData) {
-          return _register(loginData.name, loginData.password);
-        },
-        onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            //para no poder volver con tecla back
-            builder: (context) => HomeScreen(),
-          ));
-        }, // todo implementar esto o quitar la opción
-        onRecoverPassword: _recoverPassword,
+          onLogin: (loginData) {
+            return _signInWithEmailAndPassword(loginData);
+          },
+          onSignup: (loginData) {
+            return _register(loginData.name, loginData.password);
+          },
+          onSubmitAnimationCompleted: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              //para no poder volver con tecla back
+              builder: (context) => HomeScreen(),
+            ));
+          }, // todo implementar esto o quitar la opción
+          onRecoverPassword: _recoverPassword,
+        ),
       ),
     );
   }
