@@ -164,17 +164,19 @@ class PeliculaDetalle extends StatelessWidget {
                   physics: FixedExtentScrollPhysics(),
                   itemExtent: 70.0,
                   children: documents
-                      .map<Widget>((doc) => Card(
-                            child: ListTile(
-                              title: Text(
-                                doc['resena'],
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              subtitle: Text(doc['nick'].length == 0
-                                  ? 'Anónimo'
-                                  : doc['nick']),
+                      .map<Widget>(
+                        (doc) => Card(
+                          child: ListTile(
+                            title: Text(
+                              doc['resena'],
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ))
+                            subtitle: Text(doc['nick'].length == 0
+                                ? 'Anónimo'
+                                : doc['nick']),
+                          ),
+                        ),
+                      )
                       .toList()),
             );
           }
@@ -227,5 +229,15 @@ class PeliculaDetalle extends StatelessWidget {
         )
       ],
     ));
+  }
+
+  mostrarDialogo(String resena, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(resena),
+          );
+        });
   }
 }

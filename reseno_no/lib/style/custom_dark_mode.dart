@@ -19,6 +19,7 @@ class Styles {
         cardColor: Color(0xFF151515),
         canvasColor: Colors.white10,
         brightness: Brightness.dark,
+        selectedRowColor: Colors.black,
       );
     } else {
       return themeOfLight();
@@ -31,6 +32,7 @@ class Styles {
       appBarTheme: AppBarTheme(backgroundColor: Colors.teal),
       primarySwatch: Colors.deepPurple,
       accentColor: Colors.orange,
+      selectedRowColor: Colors.white,
       textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.orange),
       // fontFamily: 'SourceSansPro',
       textTheme: TextTheme(
